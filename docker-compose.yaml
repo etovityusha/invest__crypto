@@ -1,0 +1,25 @@
+version: "3.7"
+
+services:
+  db:
+    image: postgres:13.3-alpine
+    volumes:
+      - postgres_data:/postgresql/data/
+    env_file: .env
+    ports:
+      - "7071:7071"
+    command: -p 7071
+
+  web:
+    build: .
+    command: python run.py
+    env_file: .env
+    volumes:
+      - .:/app
+    ports:
+      - 7070:7070
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
