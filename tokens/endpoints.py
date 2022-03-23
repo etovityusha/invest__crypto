@@ -2,6 +2,7 @@ from typing import List
 
 import requests
 from fastapi import Depends, APIRouter, HTTPException
+from sqlalchemy import func
 
 from sql_app.database import get_db
 from sql_app.models import Token
@@ -47,7 +48,9 @@ def token_price(symbol: str = None, cmc_id: int = None, session=Depends(get_db))
     if cmc_id:
         tokens = session.query(Token).filter_by(cmc_id=cmc_id).all()
     elif symbol:
-        tokens = session.query(Token).filter_by(symbol=symbol).all()
+        tokens = session.query(Token).filter(
+            func.lower(Token.symbol) == symbol.lower(),
+        ).all()
     else:
         raise HTTPException(400, 'Query params validation failed.')
     if not tokens:
