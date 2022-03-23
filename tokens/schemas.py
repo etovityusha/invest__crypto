@@ -1,11 +1,14 @@
+from decimal import Decimal
 from typing import Optional
 
 from pydantic import BaseModel, Field
 
 
 class TokenBase(BaseModel):
-    id: int = Field(example=1)
+    cmc_id: int = Field(example=1)
     symbol: str = Field(exmample='BTC')
+    name: str = Field(example='Bitcoin')
+    slug: str = Field(example='bitcoin')
 
     class Config:
         orm_mode = True
@@ -14,3 +17,8 @@ class TokenBase(BaseModel):
 class TokenCreate(TokenBase):
     cmc_id: int
     is_active: Optional[bool] = True
+
+
+class TokenPrice(BaseModel):
+    token: TokenBase
+    price: Decimal
