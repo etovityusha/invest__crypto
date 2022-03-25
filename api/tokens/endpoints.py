@@ -1,5 +1,6 @@
 from typing import List
 
+import httpx
 from fastapi import Depends, APIRouter, HTTPException
 from sqlalchemy import func
 
@@ -29,7 +30,8 @@ def check_new_tokens(session=Depends(get_db)):
     """
     Get new tokens on coinmarketcap and add information about them to the database
     """
-    new_tokens_count = CoinMarketCap.check_new_tokens(session)
+    async with httpx.AsyncClient() as client:
+        new_tokens_count = CoinMarketCap.check_new_tokens(client, session)
     return TokensCount(count=new_tokens_count)
 
 
