@@ -22,3 +22,7 @@ class TokenCreate(TokenBase):
 class TokenPrice(BaseModel):
     token: TokenBase
     price: Decimal
+
+
+class TokensCount(BaseModel):
+    count: int = Field(example=3)

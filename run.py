@@ -1,9 +1,9 @@
 import uvicorn
 from fastapi import FastAPI
 
-from sql_app.database import engine
-from sql_app import models
-import tokens.endpoints as tokens_endpoints
+import api.tokens.endpoints as tokens_endpoints
+from core.sql_app import models
+from core.sql_app.database import engine
 
 models.Base.metadata.create_all(bind=engine)
 
